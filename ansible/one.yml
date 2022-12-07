@@ -1,0 +1,27 @@
+---
+- hosts: localhost
+  user: ansible
+  become: yes
+  connection: ssh
+   
+  vars: 
+    - b : httpd
+    - c : maven
+
+  tasks: 
+    - name: installing git in client server 
+      action: yum name=git     state=present
+
+
+    - name: installing httpd in client server 
+      action: yum name='{{b}}' state=present
+      notify: restart httpd
+
+
+    - name: installing maven in client server 
+      action: yum name='{{c}}' state=present
+
+        
+  handlers:  
+    - name: restart httpd
+      service: name=httpd state=restarted
